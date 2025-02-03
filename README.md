@@ -1,1 +1,1 @@
-# 143B2
+run the .exe file with the correct input
