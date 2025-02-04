@@ -1,6 +1,3 @@
-#include <iostream>
+#include "VM.hpp"
 
-int main()
-{
-    return 0;
-}
+
