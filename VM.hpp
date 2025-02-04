@@ -5,10 +5,11 @@
 class VM
 {
     public:
-        int* calculatePA(int VA); // returns an array which contains the PA 
-        int* ItoBin(int VA); // converts a given integer into its binary representation 
+        VM();
+        int calculatePA(int VA); // calculates new PA
+        int* InttoBinary(int VA); // converts a given integer into its binary 32-bit representation 
+        int BinarytoInt(int* BitStr, int length);
 
-        
 
 
 
