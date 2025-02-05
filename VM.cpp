@@ -23,7 +23,6 @@ VM::VM()
     frames[0] = -1;
     frames[1] = -1;
 
-    std::cout << "PM set up\n";
 }
 
 void VM::SetPM1(std::vector<int> init1) // set up PM for line 1 of init file 
@@ -43,7 +42,6 @@ void VM::SetPM1(std::vector<int> init1) // set up PM for line 1 of init file
         PM[(segment * 2) + 1] = frame;
     }
 
-    std::cout << "init 1 set\n";
 }
 
 void VM::SetPM2(std::vector<int> init2)
@@ -69,7 +67,6 @@ void VM::SetPM2(std::vector<int> init2)
         }
       
     }
-    std::cout << "init 2 set\n";
 
 }
 

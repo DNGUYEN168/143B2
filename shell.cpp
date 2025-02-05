@@ -5,19 +5,14 @@
 #include <sstream>
 #include <vector>
 
-
-int main()
+int ReadFiles(const char* initFile, const char* inputFile, const char* output)
 {
-    // handles reading from init and input passing ARRAY of ints into functions 
-
-    // init-no-dp
-
-    std::ifstream f("init.txt");
-    std::ifstream ip("input.txt");
+    std::ifstream f(initFile);
+    std::ifstream ip(inputFile);
  
     if (!f.is_open() || !ip.is_open())
     {
-        return -1; // error 
+        exit(1); // error reading file
     }
 
     std::string s,num;
@@ -42,6 +37,9 @@ int main()
         lineNo++;
     }
 
+    // close files 
+    
+
     // initialize VM 
     VM memory = VM();
 
@@ -53,26 +51,37 @@ int main()
         input.push_back(std::stoi(s));
     }
 
+    f.close();
+    ip.close();
     // open a write file and do the stuff 
+
+    std::ofstream outputFile;
+    outputFile.open(output);
 
     for (int i =0; i < input.size(); i++)
     {
-        std::cout << "VA is: " << input[i] << " PA is: " << memory.calculatePA(input[i]) << std::endl;
+        outputFile << memory.calculatePA(input[i]) << " ";
     }
 
+    return 0;
+}
 
+int main()
+{
+    // handles reading from init and input passing ARRAY of ints into functions 
 
+    // init-no-dp
+    const char* initNdp = "init-no-dp.txt";
+    const char* inputNdp = "input-no-dp.txt";
+    const char* outputNdp = "output-no-dp.txt";
 
+    ReadFiles(initNdp, inputNdp, outputNdp);
 
-
+    const char* initdp = "init-dp.txt";
+    const char* inputdp = "input-dp.txt";
+    const char* outputdp = "output-dp.txt";
     
-    // init-dp (same as init-no-dp)
-
-
-
-
-
-
+    ReadFiles(initdp, inputdp, outputdp);
 
     return 0;
 }
