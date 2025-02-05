@@ -21,7 +21,7 @@ class VM
 
     private:
         int* PM;// int array of size 1024 * 512
-        int* Disk;
+        int** Disk;
         int* frames;
 
 };

@@ -45,6 +45,7 @@ int main()
     VM memory = VM();
 
     memory.SetPM1(init1);
+    memory.SetPM2(init2);
 
 
 

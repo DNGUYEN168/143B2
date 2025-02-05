@@ -2,14 +2,26 @@
 
 #include <iostream>
 #include <math.h>
-
+#include <cstring>
 
 VM::VM()
 {
-    PM, Disk = new int[512*1024];
+    PM = new int[512*1024];
+    memset(PM,0,1024*512);
+
+
+    Disk = new int*[512];
+
+    for (int i =0; i < 512; i++)
+    {
+        Disk[i] = new int[1024];
+        memset(Disk[i],0,1024); // initialize to 0
+    }
 
     frames = new int[512];
     frames[0], frames[1] = -1;
+
+    std::cout << "PM set up\n";
 }
 
 void VM::SetPM1(std::vector<int> init1) // set up PM for line 1 of init file 
@@ -20,18 +32,44 @@ void VM::SetPM1(std::vector<int> init1) // set up PM for line 1 of init file
         int size = init1[i+1];
         int frame = init1[i+2];
 
-        if (init1[i+2]>0)
+        if (frame > 0)
         {
-            frames[init1[i+2]] = -1;
+            frames[frame] = -1;
         }
             
         PM[segment * 2] = size;
         PM[(segment * 2) + 1] = frame;
     }
+
+    std::cout << "init 1 set\n";
 }
 
 void VM::SetPM2(std::vector<int> init2)
 {
+     for (int i =0; i < init2.size(); i+=3) // go by three at a time 
+    {
+        int segment = init2[i+0];
+        int size = init2[i+1];
+        int frame = init2[i+2];
+
+        if (PM[2* segment + 1] <= 0 )
+        {
+            Disk[abs(PM[2*segment + 1])][size] = frame;
+        }
+        else
+        {
+            
+            PM[PM[2 * segment+1] * 512 + size] = frame;
+        }
+
+        if (frame > 0)
+        {
+            frames[frame] = -1;
+        }
+      
+    }
+    std::cout << "init 2 set\n";
+
 }
 
 int VM::calculatePA(int VA)
