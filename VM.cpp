@@ -52,13 +52,12 @@ void VM::SetPM2(std::vector<int> init2)
         int size = init2[i+1];
         int frame = init2[i+2];
 
-        if (PM[2* segment + 1] <= 0 )
+        if (PM[2* segment + 1] <= 0 ) 
         {
             Disk[abs(PM[2*segment + 1])][size] = frame;
         }
         else
-        {
-            
+        {    
             PM[PM[2 * segment+1] * 512 + size] = frame;
         }
 
@@ -98,33 +97,65 @@ int VM::calculatePA(int VA)
     int p = BinarytoInt(pBits, 9);
     int w = BinarytoInt(wBits, 9);
     int pw = BinarytoInt(pwBits, 18);
-
+    
     // Bound checking 
-    if ( pw > PM[2*s]) // will initialze PM soon 
-    {
+    int looky = PM[2*s];
+    if ( pw >= PM[2*s]) // will initialze PM soon 
+    {   
         return -1;
     } 
 
-    if (PM[2*s + 1] < 0)
+    if (PM[(2*s) + 1] < 0) // page fault: PT is not resident
     {
+        int frame;
+        for (int i =0; i < 512; i++) // get a free frame 
+        {
+            if (frames[i] == 0)
+            {
+                frames[i] = -1; // update list of free frames
+                frame = i; // store free frame
+                break;
+            }
+        }
 
+        int b = abs(PM[2*s + 1]); // read disk block based on s
+        int start = frame * 512; // get starting point
+        for (int i = 0; i < 512; i++)
+        {
+            PM[start + i] = Disk[b][i]; // read in data
+        }
 
-
-        return -1;
-
+        PM[2*s + 1] = frame; // update
     }
 
-    if (PM[PM[2*s + 1]*512 + p] < 0)
+    if (PM[PM[(2*s) + 1]*512 + p] < 0)
     {
+        int frame;
+        for (int i =0; i < 512; i++) // get a free frame 
+        {
+            if (frames[i] == 0)
+            {
+                frames[i] = -1; // update list of free frames
+                frame = i; // store free frame
+                break;
+            }
+        }
 
-        return -1;
+        int b = abs(PM[PM[2*s+1]*512+p]);
+        int start = frame * 512;
 
+        for (int i = 0; i < 512; i++)
+        {
+            PM[start + i] = Disk[b][i]; // read in data
+        }
+
+        
+        PM[PM[2*s + 1]*512 + p] = frame;
     }
     // as given in the book 
     int PA = PM[PM[2*s + 1]*512 + p]*512 + w;
 
     return PA;
-    return 0;
 }
 
 int* VM::InttoBinary(int VA)
