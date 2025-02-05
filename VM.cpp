@@ -19,7 +19,9 @@ VM::VM()
     }
 
     frames = new int[512];
-    frames[0], frames[1] = -1;
+    memset(frames,0,512);
+    frames[0] = -1;
+    frames[1] = -1;
 
     std::cout << "PM set up\n";
 }
@@ -100,13 +102,14 @@ int VM::calculatePA(int VA)
     
     // Bound checking 
     int looky = PM[2*s];
-    if ( pw >= PM[2*s]) // will initialze PM soon 
+    if ( pw >= PM[2*s])
     {   
         return -1;
     } 
 
     if (PM[(2*s) + 1] < 0) // page fault: PT is not resident
     {
+        // std::cout << "PF: PT not resident\n";
         int frame;
         for (int i =0; i < 512; i++) // get a free frame 
         {
@@ -130,6 +133,7 @@ int VM::calculatePA(int VA)
 
     if (PM[PM[(2*s) + 1]*512 + p] < 0)
     {
+        // std::cout << "PF: page not resident\n";
         int frame;
         for (int i =0; i < 512; i++) // get a free frame 
         {
@@ -148,9 +152,8 @@ int VM::calculatePA(int VA)
         {
             PM[start + i] = Disk[b][i]; // read in data
         }
-
-        
         PM[PM[2*s + 1]*512 + p] = frame;
+
     }
     // as given in the book 
     int PA = PM[PM[2*s + 1]*512 + p]*512 + w;

@@ -53,9 +53,11 @@ int main()
         input.push_back(std::stoi(s));
     }
 
+    // open a write file and do the stuff 
+
     for (int i =0; i < input.size(); i++)
     {
-        std::cout << memory.calculatePA(input[i]) << std::endl;
+        std::cout << "VA is: " << input[i] << " PA is: " << memory.calculatePA(input[i]) << std::endl;
     }
 
 
@@ -63,7 +65,7 @@ int main()
 
 
 
-
+    
     // init-dp (same as init-no-dp)
 
 
