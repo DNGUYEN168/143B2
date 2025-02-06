@@ -8,6 +8,7 @@ class VM
 {
     public:
         VM();
+        ~VM();
 
         void SetPM1(std::vector<int> init1);
         void SetPM2(std::vector<int> init2);

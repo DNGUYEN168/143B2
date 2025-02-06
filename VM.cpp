@@ -25,6 +25,18 @@ VM::VM()
 
 }
 
+VM::~VM()
+{
+    delete[] PM;
+    for (int i = 0; i < 1024; i++)
+    {
+        delete[] Disk[i];
+    }
+    delete[] Disk;
+
+    delete[] frames;
+}
+
 void VM::SetPM1(std::vector<int> init1) // set up PM for line 1 of init file 
 {
     for (int i =0; i < init1.size(); i+=3) // go by three at a time 
