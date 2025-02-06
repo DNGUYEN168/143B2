@@ -10,12 +10,12 @@ VM::VM()
     memset(PM,0,1024*512);
 
 
-    Disk = new int*[512];
+    Disk = new int*[1024];
 
-    for (int i =0; i < 512; i++)
+    for (int i =0; i < 1024; i++)
     {
-        Disk[i] = new int[1024];
-        memset(Disk[i],0,1024); // initialize to 0
+        Disk[i] = new int[512];
+        memset(Disk[i],0,512); // initialize to 0
     }
 
     frames = new int[512];
